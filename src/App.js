@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { VictoryBar, VictoryChart, VictoryAxis } from 'victory';
+import { Nav, Navbar, FormGroup, FormControl, Label } from 'react-bootstrap';
 
 const data = [
   {
@@ -16,15 +17,23 @@ const data = [
   }
 ]
 
+class AppState {
+  stateData: Object
+}
+
 class App extends Component {
 
-  stateSelect(e) {
-    let reader = new FileReader();
-    reader.onloadend = function() {
+  constructor(props) {
+    super(props);
+    this.state = new AppState();
+  }
 
-      console.log(JSON.parse(reader.result).arms);
+  stateSelect(e) {
+    let app = this;
+    let reader = new FileReader();
+    reader.onloadend = () => {
+      app.setState({stateData: JSON.parse(reader.result)});
     };
-    console.log("file", e.target.files[0]);
     reader.readAsText(e.target.files[0]);
   }
 
@@ -32,23 +41,54 @@ class App extends Component {
     console.log("log selected", e.target.files);
   }
 
+  navigation() {
+    return <Navbar staticTop>
+              <Navbar.Header>
+                <Navbar.Brand>
+                  <a href="#home">Bandit Tools</a>
+                </Navbar.Brand>
+              </Navbar.Header>
+              <Nav pullRight>
+                <Navbar.Form>
+                   <Label>State File:</Label>
+                   <FormGroup>
+                     <FormControl type="file" onChange={(e) => this.stateSelect(e)}/>
+                   </FormGroup>{' '}
+                </Navbar.Form>
+                <Navbar.Form>
+                   <Label>Log File:  </Label>
+                   <FormGroup>
+                     <FormControl type="file" onChange={(e) => this.logSelect(e)}/>
+                   </FormGroup>{' '}
+                </Navbar.Form>
+              </Nav>
+           </Navbar>
+  }
+
+  renderDrawCount() {
+    if(this.state.stateData) {
+
+      //TODO transform this.state.stateData for VictoryChart
+
+      return <VictoryChart domainPadding={20}>
+        <VictoryAxis label="Arms" />
+        <VictoryAxis label="Draw Count" dependentAxis={true}/>
+        <VictoryBar data={this.state.stateData} x="arm" y="counts"/>
+      </VictoryChart>
+    } else {
+      return <div>Chart Placeholder TODO</div>
+    }
+  }
+
   render() {
     return (
-      <div className="App">
-        <div>
-          input state file:
-          <input name="myFile" type="file" onChange={this.stateSelect}/>
-        </div>
-        <div>
-          input log file:
-          <input name="myFile" type="file" onChange={this.logSelect}/>
-        </div>
-
-        <VictoryChart domainPadding={20}>
-          <VictoryAxis label="Arms" />
-          <VictoryAxis label="Draw Count" dependentAxis={true}/>
-          <VictoryBar data={data} x="arm" y="counts"/>
-        </VictoryChart>
+      <div>
+        <header>
+        {this.navigation()}
+        </header>
+        <main>
+        {this.renderDrawCount()}
+        </main>
       </div>
     );
   }
