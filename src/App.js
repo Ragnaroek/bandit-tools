@@ -2,21 +2,6 @@ import React, { Component } from 'react';
 import { VictoryBar, VictoryChart, VictoryAxis } from 'victory';
 import { Nav, Navbar, FormGroup, FormControl, Label } from 'react-bootstrap';
 
-const data = [
-  {
-    "arm": "1",
-    "counts": 56
-  },
-  {
-    "arm": "2",
-    "counts": 56
-  },
-  {
-    "arm": "3",
-    "counts": 32
-  }
-]
-
 class AppState {
   stateData: Object
 }
@@ -65,15 +50,36 @@ class App extends Component {
            </Navbar>
   }
 
+  transformToChartData() {
+    let result = [];
+    let vals = this.state.stateData.counts;
+
+    console.log("vals = ", vals.length);
+
+    for (var key in vals) {
+      if (!vals.hasOwnProperty(key)) continue;
+      result.push({arm: key.split(":")[1], counts: vals[key]});
+    }
+
+    result.sort((a, b) => {
+        let t1 = parseInt(a.arm, 10);
+        let t2 = parseInt(b.arm, 10);
+        return t1 - t2;
+    });
+
+    return result;
+  }
+
   renderDrawCount() {
     if(this.state.stateData) {
 
-      //TODO transform this.state.stateData for VictoryChart
+      let chartData = this.transformToChartData();
+      console.log("chartData: ", chartData);
 
       return <VictoryChart domainPadding={20}>
         <VictoryAxis label="Arms" />
         <VictoryAxis label="Draw Count" dependentAxis={true}/>
-        <VictoryBar data={this.state.stateData} x="arm" y="counts"/>
+        <VictoryBar data={chartData} x="arm" y="counts"/>
       </VictoryChart>
     } else {
       return <div>Chart Placeholder TODO</div>
