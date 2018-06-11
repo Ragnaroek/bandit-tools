@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { VictoryBar, VictoryChart, VictoryAxis } from 'victory';
-import { Nav, Navbar, FormGroup, FormControl, Label } from 'react-bootstrap';
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryLabel } from 'victory';
+import { Nav, Navbar, FormGroup, FormControl, Label, Grid, Row, Col } from 'react-bootstrap';
 
 class AppState {
   stateData: Object
@@ -50,15 +50,12 @@ class App extends Component {
            </Navbar>
   }
 
-  transformToChartData() {
+  transformToChartData(vals) {
     let result = [];
-    let vals = this.state.stateData.counts;
-
-    console.log("vals = ", vals.length);
 
     for (var key in vals) {
       if (!vals.hasOwnProperty(key)) continue;
-      result.push({arm: key.split(":")[1], counts: vals[key]});
+      result.push({arm: key.split(":")[1], val: vals[key]});
     }
 
     result.sort((a, b) => {
@@ -73,14 +70,33 @@ class App extends Component {
   renderDrawCount() {
     if(this.state.stateData) {
 
-      let chartData = this.transformToChartData();
-      console.log("chartData: ", chartData);
+      let countData = this.transformToChartData(this.state.stateData.counts);
+      let rewardData = this.transformToChartData(this.state.stateData.values);
 
-      return <VictoryChart domainPadding={20}>
-        <VictoryAxis label="Arms" />
-        <VictoryAxis label="Draw Count" dependentAxis={true}/>
-        <VictoryBar data={chartData} x="arm" y="counts"/>
-      </VictoryChart>
+      return <Grid>
+        <Row className="show-grid">
+          <Col xs={12} md={6} lg={4}>
+            <VictoryChart domainPadding={20}>
+              <VictoryAxis label="Arms" fixLabelOverlap={true}/>
+              <VictoryAxis label="Draw Count" dependentAxis={true} axisLabelComponent={<VictoryLabel dy={-12}/>}/>
+              <VictoryBar data={countData} x="arm" y="val"/>
+            </VictoryChart>
+          </Col>
+          <Col xs={12} md={6} lg={4}>
+            <VictoryChart domainPadding={20}>
+              <VictoryAxis label="Arms" fixLabelOverlap={true}/>
+              <VictoryAxis label="Average Reward (kH/s)" dependentAxis={true} axisLabelComponent={<VictoryLabel dy={-12}/>}/>
+              <VictoryBar data={rewardData} x="arm" y="val"/>
+            </VictoryChart>
+          </Col>
+          <Col xs={12} md={6} lg={4}>
+            TODO Add Summary Panel here, with:
+            - Total Regret,
+            - Best Arm with reward
+            - ????
+          </Col>
+        </Row>
+      </Grid>
     } else {
       return <div>Chart Placeholder TODO</div>
     }
