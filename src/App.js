@@ -90,15 +90,11 @@ class App extends Component {
             </VictoryChart>
           </Col>
           <Col xs={12} md={6} lg={4}>
-            TODO Add Summary Panel here, with:
-            - Total Regret,
-            - Best Arm with reward
-            - ????
           </Col>
         </Row>
       </Grid>
     } else {
-      return <div>Chart Placeholder TODO</div>
+      return <div>Upload your state or log file to see analysis results</div>
     }
   }
 
