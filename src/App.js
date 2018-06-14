@@ -4,6 +4,7 @@ import { Nav, Navbar, FormGroup, FormControl, Label, Grid, Row, Col } from 'reac
 
 class AppState {
   stateData: Object
+  logData: Object
 }
 
 class App extends Component {
@@ -23,7 +24,12 @@ class App extends Component {
   }
 
   logSelect(e) {
-    console.log("log selected", e.target.files);
+    let app = this;
+    let reader = new FileReader();
+    reader.onloadend = () => {
+      app.setState({logData: reader.result});
+    };
+    reader.readAsText(e.target.files[0]);
   }
 
   navigation() {
@@ -35,13 +41,13 @@ class App extends Component {
               </Navbar.Header>
               <Nav pullRight>
                 <Navbar.Form>
-                   <Label>State File:</Label>
+                   <Label bsStyle="info" style={{display:"inline-block", minWidth: "70px"}}>State File:</Label>
                    <FormGroup>
                      <FormControl type="file" onChange={(e) => this.stateSelect(e)}/>
                    </FormGroup>{' '}
                 </Navbar.Form>
                 <Navbar.Form>
-                   <Label>Log File:  </Label>
+                   <Label bsStyle="info" style={{display:"inline-block", minWidth: "70px"}}>Log File:</Label>
                    <FormGroup>
                      <FormControl type="file" onChange={(e) => this.logSelect(e)}/>
                    </FormGroup>{' '}
@@ -67,14 +73,28 @@ class App extends Component {
     return result;
   }
 
-  renderDrawCount() {
-    if(this.state.stateData) {
+  logChartsRow() {
+    if(this.state.logData) {
+      return <Row>
+        <Col xs={12} md={12} lg={12}>
+          <div>TODO Display data here</div>
+        </Col>
+      </Row>
+    } else {
+      return <Row>
+        <Col xs={12} md={12} lg={12} style={{margin:"20px"}}>
+          <div>Upload your log file to see log related charts</div>
+        </Col>
+      </Row>
+    }
+  }
 
+  countChartsRow() {
+    if(this.state.stateData) {
       let countData = this.transformToChartData(this.state.stateData.counts);
       let rewardData = this.transformToChartData(this.state.stateData.values);
 
-      return <Grid>
-        <Row className="show-grid">
+      return <Row>
           <Col xs={12} md={6} lg={4}>
             <VictoryChart domainPadding={20}>
               <VictoryAxis label="Arms" fixLabelOverlap={true}/>
@@ -92,10 +112,20 @@ class App extends Component {
           <Col xs={12} md={6} lg={4}>
           </Col>
         </Row>
-      </Grid>
     } else {
-      return <div>Upload your state or log file to see analysis results</div>
+      return <Row>
+        <Col xs={12} md={12} lg={12} style={{margin:"20px"}}>
+          <div>Upload your state file to see state related charts</div>
+        </Col>
+      </Row>
     }
+  }
+
+  renderCharts() {
+      return <Grid>
+        {this.countChartsRow()}
+        {this.logChartsRow()}
+      </Grid>
   }
 
   render() {
@@ -105,7 +135,7 @@ class App extends Component {
         {this.navigation()}
         </header>
         <main>
-        {this.renderDrawCount()}
+        {this.renderCharts()}
         </main>
       </div>
     );
