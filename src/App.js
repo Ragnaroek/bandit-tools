@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryLabel } from 'victory';
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryLabel, VictoryLine } from 'victory';
 import { Nav, Navbar, FormGroup, FormControl, Label, Grid, Row, Col } from 'react-bootstrap';
+import * as Papa from 'papaparse'
 
 class AppState {
   stateData: Object
@@ -25,11 +26,12 @@ class App extends Component {
 
   logSelect(e) {
     let app = this;
-    let reader = new FileReader();
-    reader.onloadend = () => {
-      app.setState({logData: reader.result});
-    };
-    reader.readAsText(e.target.files[0]);
+    Papa.parse(e.target.files[0], {
+      complete: function(results) {
+        app.setState({logData: results});
+        console.log("result=", results);
+      }
+    })
   }
 
   navigation() {
@@ -73,11 +75,30 @@ class App extends Component {
     return result;
   }
 
+  transformToTimeSeriesUpdate(logData) {
+    let result = [];
+    for (let i = 0; i < logData.data.length; i++) {
+      let line = logData.data[i];
+      if (line[0] === "UPDATE") {
+        result.push(parseFloat(line[3]));
+      }
+    }
+    return result;
+  }
+
   logChartsRow() {
     if(this.state.logData) {
+
+      let updateData = this.transformToTimeSeriesUpdate(this.state.logData);
+      console.log("updateData = ", updateData);
+
       return <Row>
         <Col xs={12} md={12} lg={12}>
-          <div>TODO Display data here</div>
+          <VictoryChart domainPadding={20}>
+            <VictoryAxis label="Time" fixLabelOverlap={true}/>
+            <VictoryAxis label="Reward (kH/s)" dependentAxis={true} axisLabelComponent={<VictoryLabel dy={-12}/>}/>
+            <VictoryLine data={updateData}/>
+          </VictoryChart>
         </Col>
       </Row>
     } else {

@@ -4,11 +4,12 @@
   "private": true,
   "homepage": "https://ragnaroek.github.io/bandit-tools",
   "dependencies": {
-    "react": "16.4.0",
+    "papaparse": "^4.5.0",
+    "react": "16.4.1",
     "react-bootstrap": "0.32.1",
-    "react-dom": "16.4.0",
+    "react-dom": "16.4.1",
     "react-scripts": "1.1.4",
-    "victory": "0.26.1"
+    "victory": "0.27.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -19,7 +20,7 @@
     "deploy": "gh-pages -d build"
   },
   "devDependencies": {
-    "flow-bin": "0.73.0",
+    "flow-bin": "0.74.0",
     "gh-pages": "^1.2.0"
   }
 }
