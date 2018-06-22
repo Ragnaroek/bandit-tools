@@ -90,14 +90,14 @@ class App extends Component {
     if(this.state.logData) {
 
       let updateData = this.transformToTimeSeriesUpdate(this.state.logData);
-      console.log("updateData = ", updateData);
 
       return <Row>
-        <Col xs={12} md={12} lg={12}>
+        <Col xs={12} md={6} lg={8} style={{width: "600px"}}>
           <VictoryChart domainPadding={20}>
             <VictoryAxis label="Time" fixLabelOverlap={true}/>
             <VictoryAxis label="Reward (kH/s)" dependentAxis={true} axisLabelComponent={<VictoryLabel dy={-12}/>}/>
-            <VictoryLine data={updateData}/>
+            <VictoryLine data={updateData}
+                         style={{ data: { strokeWidth: 1, strokeLinecap: "round" } }}/>
           </VictoryChart>
         </Col>
       </Row>
