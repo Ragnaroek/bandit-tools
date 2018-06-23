@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryLabel, VictoryLine } from 'victory';
-import { Nav, Navbar, FormGroup, FormControl, Label, Grid, Row, Col } from 'react-bootstrap';
+import { Nav, Navbar, FormGroup, FormControl, Label, Grid, Row, Col, Panel } from 'react-bootstrap';
 import * as Papa from 'papaparse'
 
 class AppState {
@@ -58,12 +58,16 @@ class App extends Component {
            </Navbar>
   }
 
+  niceName(str) {
+    return str.split(":")[1];
+  }
+
   transformToChartData(vals) {
     let result = [];
 
     for (var key in vals) {
       if (!vals.hasOwnProperty(key)) continue;
-      result.push({arm: key.split(":")[1], val: vals[key]});
+      result.push({arm: this.niceName(key), val: vals[key]});
     }
 
     result.sort((a, b) => {
@@ -92,9 +96,9 @@ class App extends Component {
       let updateData = this.transformToTimeSeriesUpdate(this.state.logData);
 
       return <Row>
-        <Col xs={12} md={6} lg={8} style={{width: "600px"}}>
-          <VictoryChart domainPadding={20}>
-            <VictoryAxis label="Time" fixLabelOverlap={true}/>
+        <Col xs={12} md={6} lg={12}>
+          <VictoryChart domainPadding={20} width={1200} height={300}>
+            <VictoryAxis label="Draws" fixLabelOverlap={true}/>
             <VictoryAxis label="Reward (kH/s)" dependentAxis={true} axisLabelComponent={<VictoryLabel dy={-12}/>}/>
             <VictoryLine data={updateData}
                          style={{ data: { strokeWidth: 1, strokeLinecap: "round" } }}/>
@@ -115,7 +119,7 @@ class App extends Component {
       let countData = this.transformToChartData(this.state.stateData.counts);
       let rewardData = this.transformToChartData(this.state.stateData.values);
 
-      return <Row>
+      return <div>
           <Col xs={12} md={6} lg={4}>
             <VictoryChart domainPadding={20}>
               <VictoryAxis label="Arms" fixLabelOverlap={true}/>
@@ -130,21 +134,108 @@ class App extends Component {
               <VictoryBar data={rewardData} x="arm" y="val"/>
             </VictoryChart>
           </Col>
-          <Col xs={12} md={6} lg={4}>
-          </Col>
-        </Row>
+        </div>
     } else {
-      return <Row>
-        <Col xs={12} md={12} lg={12} style={{margin:"20px"}}>
+      return <Col xs={12} md={12} lg={12} style={{margin:"20px"}}>
           <div>Upload your state file to see state related charts</div>
         </Col>
-      </Row>
+    }
+  }
+
+  highest(data) {
+    var arm = "?"
+    var max = -1;
+    for (var key in data) {
+      if (!data.hasOwnProperty(key)) continue;
+      var val = data[key];
+
+      if(val > max) {
+        max = val
+        arm = key
+      }
+    }
+    return [this.niceName(arm), max];
+  }
+
+
+  stateDataSummary() {
+    if(this.state.stateData) {
+      let [hRewardArm, hReward] = this.highest(this.state.stateData.values);
+      let [hCountArm, hCount] = this.highest(this.state.stateData.counts);
+
+      return <div>
+        <div>Arm with highest reward: {hRewardArm} ({hReward.toPrecision(4)})</div>
+        <div>Arm with highest count: {hCountArm} ({hCount})</div>
+     </div>
+   }
+  }
+
+  minMaxReward(logData) {
+    var min = Number.MAX_SAFE_INTEGER;
+    var max = Number.MIN_SAFE_INTEGER;
+    for (let i = 0; i < logData.data.length; i++) {
+      let line = logData.data[i];
+      if (line[0] === "UPDATE") {
+        let reward = parseFloat(line[3]);
+        if(reward < min) {
+          min = reward
+        }
+        if(reward > max) {
+          max = reward
+        }
+      }
+    }
+    return [min, max];
+  }
+
+  regretAndAvg(logData, max) {
+    let regret = 0;
+    let sum  = 0;
+    for (let i = 0; i < logData.data.length; i++) {
+      let line = logData.data[i];
+      if (line[0] === "UPDATE") {
+        let reward = parseFloat(line[3]);
+        regret += max - reward;
+        sum += reward
+      }
+    }
+    let avg = sum/logData.data.length;
+    return [regret, avg];
+  }
+
+  logDataSummary() {
+    if(this.state.logData) {
+
+      let [min, max] = this.minMaxReward(this.state.logData);
+      let [regret, avg] = this.regretAndAvg(this.state.logData, max);
+
+      return <div>
+        <div>&nbsp;</div>
+        <div>Total regret: {regret.toPrecision(4)} kH/s</div>
+        <div>Min. reward: {min.toPrecision(4)} kH/s</div>
+        <div>Max. reward: {max.toPrecision(4)} kH/s</div>
+        <div>Avg. reward: {avg.toPrecision(4)} kH/s</div>
+      </div>
+    }
+  }
+
+  summaryPanel() {
+    if(this.state.stateData || this.state.logData) {
+      return <Col xs={12} md={6} lg={4}>
+        <Panel>
+          {this.stateDataSummary()}
+          {this.logDataSummary()}
+        </Panel>
+      </Col>
     }
   }
 
   renderCharts() {
       return <Grid>
-        {this.countChartsRow()}
+        <Row>
+          {this.countChartsRow()}
+          {this.summaryPanel()}
+        </Row>
         {this.logChartsRow()}
       </Grid>
   }
