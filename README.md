@@ -4,5 +4,3 @@ Visualisation/Evaluation App for the *Multi-armed bandit algorithms in Rust* imp
 over here: https://github.com/Ragnaroek/bandit
 
 ![](https://image.ibb.co/iXR8QT/teaser_img.png)
-
-# Documentation
