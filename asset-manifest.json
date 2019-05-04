@@ -1,4 +1,13 @@
 {
-  "main.js": "static/js/main.7a1b9422.js",
-  "main.js.map": "static/js/main.7a1b9422.js.map"
+  "files": {
+    "main.js": "/bandit-tools/static/js/main.c44c9462.chunk.js",
+    "main.js.map": "/bandit-tools/static/js/main.c44c9462.chunk.js.map",
+    "runtime~main.js": "/bandit-tools/static/js/runtime~main.a6ba36e9.js",
+    "runtime~main.js.map": "/bandit-tools/static/js/runtime~main.a6ba36e9.js.map",
+    "static/js/2.d2814768.chunk.js": "/bandit-tools/static/js/2.d2814768.chunk.js",
+    "static/js/2.d2814768.chunk.js.map": "/bandit-tools/static/js/2.d2814768.chunk.js.map",
+    "index.html": "/bandit-tools/index.html",
+    "precache-manifest.7994a0630f53ebabaa5fa27bccc29a77.js": "/bandit-tools/precache-manifest.7994a0630f53ebabaa5fa27bccc29a77.js",
+    "service-worker.js": "/bandit-tools/service-worker.js"
+  }
 }
