@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/bandit-tools/static/js/main.c44c9462.chunk.js",
-    "main.js.map": "/bandit-tools/static/js/main.c44c9462.chunk.js.map",
+    "main.js": "/bandit-tools/static/js/main.e8d59593.chunk.js",
+    "main.js.map": "/bandit-tools/static/js/main.e8d59593.chunk.js.map",
     "runtime~main.js": "/bandit-tools/static/js/runtime~main.a6ba36e9.js",
     "runtime~main.js.map": "/bandit-tools/static/js/runtime~main.a6ba36e9.js.map",
-    "static/js/2.d2814768.chunk.js": "/bandit-tools/static/js/2.d2814768.chunk.js",
-    "static/js/2.d2814768.chunk.js.map": "/bandit-tools/static/js/2.d2814768.chunk.js.map",
+    "static/js/2.6bb5efc5.chunk.js": "/bandit-tools/static/js/2.6bb5efc5.chunk.js",
+    "static/js/2.6bb5efc5.chunk.js.map": "/bandit-tools/static/js/2.6bb5efc5.chunk.js.map",
     "index.html": "/bandit-tools/index.html",
-    "precache-manifest.7994a0630f53ebabaa5fa27bccc29a77.js": "/bandit-tools/precache-manifest.7994a0630f53ebabaa5fa27bccc29a77.js",
+    "precache-manifest.2a2afdccd9a79f868e8eadea04311448.js": "/bandit-tools/precache-manifest.2a2afdccd9a79f868e8eadea04311448.js",
     "service-worker.js": "/bandit-tools/service-worker.js"
   }
 }
