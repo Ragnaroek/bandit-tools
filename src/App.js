@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryLabel, VictoryLine } from 'victory';
-import { Nav, Navbar, FormGroup, FormControl, Label, Grid, Row, Col, Panel } from 'react-bootstrap';
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Container from 'react-bootstrap/Container'
+import Card from 'react-bootstrap/Card'
+import Badge from 'react-bootstrap/Badge'
+import FormControl from 'react-bootstrap/FormControl'
+import Form from 'react-bootstrap/Form'
+import Navbar from 'react-bootstrap/Navbar'
 import * as Papa from 'papaparse'
 
 class AppState {
@@ -35,26 +42,24 @@ class App extends Component {
   }
 
   navigation() {
-    return <Navbar staticTop>
-              <Navbar.Header>
+    return <Navbar fixed="top" className="navbar-expand-sm justify-content-end">
+          
                 <Navbar.Brand>
                   <a href="#home">Bandit Tools</a>
                 </Navbar.Brand>
-              </Navbar.Header>
-              <Nav pullRight>
-                <Navbar.Form>
-                   <Label bsStyle="info" style={{display:"inline-block", minWidth: "70px"}}>State File:</Label>
-                   <FormGroup>
+                
+                <Form inline>
+                   <Badge pill variant="info" style={{display:"inline-block", minWidth: "70px"}}>State File:</Badge>
+                   <Form.Group>
                      <FormControl type="file" onChange={(e) => this.stateSelect(e)}/>
-                   </FormGroup>{' '}
-                </Navbar.Form>
-                <Navbar.Form>
-                   <Label bsStyle="info" style={{display:"inline-block", minWidth: "70px"}}>Log File:</Label>
-                   <FormGroup>
+                   </Form.Group>{' '}
+                </Form>
+                <Form inline>
+                   <Badge pill variant="info" style={{display:"inline-block", minWidth: "70px"}}>Log File:</Badge>
+                   <Form.Group>
                      <FormControl type="file" onChange={(e) => this.logSelect(e)}/>
-                   </FormGroup>{' '}
-                </Navbar.Form>
-              </Nav>
+                   </Form.Group>{' '}
+                </Form>
            </Navbar>
   }
 
@@ -157,7 +162,6 @@ class App extends Component {
     return [this.niceName(arm), max];
   }
 
-
   stateDataSummary() {
     if(this.state.stateData) {
       let [hRewardArm, hReward] = this.highest(this.state.stateData.values);
@@ -222,22 +226,22 @@ class App extends Component {
   summaryPanel() {
     if(this.state.stateData || this.state.logData) {
       return <Col xs={12} md={6} lg={4}>
-        <Panel>
+        <Card>
           {this.stateDataSummary()}
           {this.logDataSummary()}
-        </Panel>
+        </Card>
       </Col>
     }
   }
 
   renderCharts() {
-      return <Grid>
+      return <Container>
         <Row>
           {this.countChartsRow()}
           {this.summaryPanel()}
         </Row>
         {this.logChartsRow()}
-      </Grid>
+      </Container>
   }
 
   render() {
