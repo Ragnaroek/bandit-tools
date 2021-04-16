@@ -8,6 +8,7 @@ import Badge from 'react-bootstrap/Badge'
 import FormControl from 'react-bootstrap/FormControl'
 import Form from 'react-bootstrap/Form'
 import Navbar from 'react-bootstrap/Navbar'
+import Nav from 'react-bootstrap/Nav'
 import * as Papa from 'papaparse'
 
 class AppState {
@@ -42,24 +43,16 @@ class App extends Component {
   }
 
   navigation() {
-    return <Navbar fixed="top" className="navbar-expand-sm justify-content-end">
-          
-                <Navbar.Brand>
-                  <a href="#home">Bandit Tools</a>
-                </Navbar.Brand>
-                
-                <Form inline>
-                   <Badge pill variant="info" style={{display:"inline-block", minWidth: "70px"}}>State File:</Badge>
-                   <Form.Group>
-                     <FormControl type="file" onChange={(e) => this.stateSelect(e)}/>
-                   </Form.Group>{' '}
-                </Form>
-                <Form inline>
-                   <Badge pill variant="info" style={{display:"inline-block", minWidth: "70px"}}>Log File:</Badge>
-                   <Form.Group>
-                     <FormControl type="file" onChange={(e) => this.logSelect(e)}/>
-                   </Form.Group>{' '}
-                </Form>
+    return <Navbar bg="light" expand="lg">
+                <Navbar.Brand href="#home">Bandit Tools</Navbar.Brand>
+                  <Form inline>
+                    <Badge pill variant="info">State File:</Badge>
+                    <FormControl type="file" onChange={(e) => this.stateSelect(e)}/>
+                  </Form>
+                  <Form inline>
+                    <Badge pill variant="info">Log File:</Badge>
+                    <FormControl type="file" onChange={(e) => this.logSelect(e)}/>
+                  </Form>
            </Navbar>
   }
 
@@ -101,7 +94,7 @@ class App extends Component {
       let updateData = this.transformToTimeSeriesUpdate(this.state.logData);
 
       return <Row>
-        <Col xs={12} md={6} lg={12}>
+        <Col>
           <VictoryChart domainPadding={20} width={1200} height={300}>
             <VictoryAxis label="Draws" fixLabelOverlap={true}/>
             <VictoryAxis label="Reward (kH/s)" dependentAxis={true} axisLabelComponent={<VictoryLabel dy={-12}/>}/>
@@ -125,14 +118,14 @@ class App extends Component {
       let rewardData = this.transformToChartData(this.state.stateData.values);
 
       return <div>
-          <Col xs={12} md={6} lg={4}>
+          <Col>
             <VictoryChart domainPadding={20}>
               <VictoryAxis label="Arms" fixLabelOverlap={true}/>
               <VictoryAxis label="Draw Count" dependentAxis={true} axisLabelComponent={<VictoryLabel dy={-12}/>}/>
               <VictoryBar data={countData} x="arm" y="val"/>
             </VictoryChart>
           </Col>
-          <Col xs={12} md={6} lg={4}>
+          <Col>
             <VictoryChart domainPadding={20}>
               <VictoryAxis label="Arms" fixLabelOverlap={true}/>
               <VictoryAxis label="Average Reward (kH/s)" dependentAxis={true} axisLabelComponent={<VictoryLabel dy={-12}/>}/>
