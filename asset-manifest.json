@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.js": "/bandit-tools/static/js/main.ee05a75c.chunk.js",
-    "main.js.map": "/bandit-tools/static/js/main.ee05a75c.chunk.js.map",
-    "runtime-main.js": "/bandit-tools/static/js/runtime-main.1d132e3f.js",
-    "runtime-main.js.map": "/bandit-tools/static/js/runtime-main.1d132e3f.js.map",
-    "static/js/2.47c8bd29.chunk.js": "/bandit-tools/static/js/2.47c8bd29.chunk.js",
-    "static/js/2.47c8bd29.chunk.js.map": "/bandit-tools/static/js/2.47c8bd29.chunk.js.map",
+    "main.js": "/bandit-tools/static/js/main.76ffc7ba.chunk.js",
+    "main.js.map": "/bandit-tools/static/js/main.76ffc7ba.chunk.js.map",
+    "runtime-main.js": "/bandit-tools/static/js/runtime-main.713a6b83.js",
+    "runtime-main.js.map": "/bandit-tools/static/js/runtime-main.713a6b83.js.map",
+    "static/js/2.a4fef86e.chunk.js": "/bandit-tools/static/js/2.a4fef86e.chunk.js",
+    "static/js/2.a4fef86e.chunk.js.map": "/bandit-tools/static/js/2.a4fef86e.chunk.js.map",
     "index.html": "/bandit-tools/index.html",
-    "static/js/2.47c8bd29.chunk.js.LICENSE.txt": "/bandit-tools/static/js/2.47c8bd29.chunk.js.LICENSE.txt"
+    "static/js/2.a4fef86e.chunk.js.LICENSE.txt": "/bandit-tools/static/js/2.a4fef86e.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.1d132e3f.js",
-    "static/js/2.47c8bd29.chunk.js",
-    "static/js/main.ee05a75c.chunk.js"
+    "static/js/runtime-main.713a6b83.js",
+    "static/js/2.a4fef86e.chunk.js",
+    "static/js/main.76ffc7ba.chunk.js"
   ]
 }
